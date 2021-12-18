@@ -1,0 +1,15 @@
+services:
+  database:
+    image: "postgres" # use latest official postgres version
+    environment: 
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "6001:6001"
+    container_name: postgres-db-restoring
+    env_file:
+      - database/.env # configure postgres
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+    command: -p 6001
+volumes:
+  database-data: #
