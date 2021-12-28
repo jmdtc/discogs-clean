@@ -51,9 +51,16 @@ export const initArtistModel = async function (
         timestamps: false,
         underscored: true,
         sequelize,
+        indexes: [
+          {
+            name: "artist_name_trgm",
+            using: "gin",
+            fields: [Sequelize.literal("name gin_trgm_ops")],
+          },
+        ],
       }
     );
-    await Artist.sync({ alter: true });
+    await Artist.sync();
   } catch (error) {
     console.error(error);
   }

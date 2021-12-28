@@ -4,12 +4,12 @@ services:
     environment: 
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
-      - "6001:6001"
-    container_name: postgres-db-restoring
+      - "5432:5432"
+    container_name: postgres-db
     env_file:
       - database/.env # configure postgres
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-    command: -p 6001
+    command: -p 5432
 volumes:
   database-data: #

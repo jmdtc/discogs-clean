@@ -6,6 +6,7 @@ import {
   Optional,
   BelongsToManyAddAssociationMixin,
 } from "sequelize";
+import { Literal } from "sequelize/types/lib/utils";
 import Artist from "../artist/model";
 import Release from "../release";
 
@@ -75,9 +76,16 @@ export const initTrackModel = async function (
         timestamps: false,
         underscored: true,
         sequelize,
+        indexes: [
+          {
+            name: "track_title_trgm",
+            using: "gin",
+            fields: [Sequelize.literal("title gin_trgm_ops")],
+          },
+        ],
       }
     );
-    await Track.sync({ alter: true });
+    await Track.sync();
   } catch (error) {
     console.error(error);
   }

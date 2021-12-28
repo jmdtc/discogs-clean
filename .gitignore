@@ -1,7 +1,8 @@
 # Custom
 # Database
 
-database/
+database/**.sql
+database/**.env
 
 # MacOS
 .DS_Store

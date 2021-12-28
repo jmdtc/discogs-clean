@@ -1,17 +1,17 @@
 import { DataTypes, Sequelize } from "sequelize";
-import Release, { initReleaseModel } from "./models/release";
-import Artist, { initArtistModel } from "./models/artist";
-import Style, { initStyleModel } from "./models/style";
-import Genre, { initGenreModel } from "./models/genre";
-import Format, { initFormatModel } from "./models/format";
-import Label, { initLabelModel } from "./models/label";
-import Track, { initTrackModel } from "./models/track";
+import Release, { initReleaseModel } from "../../database/models/release";
+import Artist, { initArtistModel } from "../../database/models/artist";
+import Style, { initStyleModel } from "../../database/models/style";
+import Genre, { initGenreModel } from "../../database/models/genre";
+import Format, { initFormatModel } from "../../database/models/format";
+import Label, { initLabelModel } from "../../database/models/label";
+import Track, { initTrackModel } from "../../database/models/track";
 
 export default async function (): Promise<Sequelize> {
   const sequelize = new Sequelize(
-    "postgresql://unicorn_user:magical_password@localhost:6000/rainbow_database",
+    "postgresql://unicorn_user:magical_password@localhost:5432/rainbow_database",
     {
-      logging: false,
+      logging: true,
     }
   );
 
@@ -186,6 +186,7 @@ export default async function (): Promise<Sequelize> {
     foreignKey: "artist_id",
   });
 
-  await sequelize.sync({ alter: true });
+  await sequelize.sync();
+
   return sequelize;
 }

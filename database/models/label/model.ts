@@ -1,51 +1,53 @@
-import { Sequelize, DataTypes, Model, Association, Optional } from "sequelize";
+import {
+  Sequelize,
+  DataTypes,
+  Model,
+  Association,
+  HasManyAddAssociationMixin,
+} from "sequelize";
 import Release from "../release";
 
-interface GenreAttributes {
+interface LabelAttributes {
   id: number;
   name: string;
 }
 
-interface GenreCreationAttributes extends Optional<GenreAttributes, "id"> {}
-
-export default class Genre extends Model<
-  GenreAttributes,
-  GenreCreationAttributes
-> {
+export default class Label extends Model<LabelAttributes, {}> {
   public id!: number;
   public name!: string;
 
   public readonly releases?: Release[];
 
+  public addReleases!: HasManyAddAssociationMixin<Release, Release[]>;
+
   public static associations: {
-    releases: Association<Genre, Release>;
+    releases: Association<Label, Release>;
   };
 }
 
-export const initGenreModel = async function (
+export const initLabelModel = async function (
   sequelize: Sequelize
 ): Promise<void> {
   try {
-    Genre.init(
+    Label.init(
       {
         id: {
           type: new DataTypes.INTEGER(),
-          autoIncrement: true,
           primaryKey: true,
         },
         name: {
-          type: new DataTypes.STRING(128),
+          type: new DataTypes.STRING(),
           allowNull: false,
         },
       },
       {
-        tableName: "genres",
+        tableName: "labels",
         timestamps: false,
         underscored: true,
         sequelize,
       }
     );
-    await Genre.sync({ alter: true });
+    await Label.sync();
   } catch (error) {
     console.error(error);
   }

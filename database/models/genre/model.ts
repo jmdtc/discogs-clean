@@ -1,16 +1,16 @@
 import { Sequelize, DataTypes, Model, Association, Optional } from "sequelize";
 import Release from "../release";
 
-interface StyleAttributes {
+interface GenreAttributes {
   id: number;
   name: string;
 }
 
-interface StyleCreationAttributes extends Optional<StyleAttributes, "id"> {}
+interface GenreCreationAttributes extends Optional<GenreAttributes, "id"> {}
 
-export default class Style extends Model<
-  StyleAttributes,
-  StyleCreationAttributes
+export default class Genre extends Model<
+  GenreAttributes,
+  GenreCreationAttributes
 > {
   public id!: number;
   public name!: string;
@@ -18,18 +18,18 @@ export default class Style extends Model<
   public readonly releases?: Release[];
 
   public static associations: {
-    releases: Association<Style, Release>;
+    releases: Association<Genre, Release>;
   };
 }
 
-export const initStyleModel = async function (
+export const initGenreModel = async function (
   sequelize: Sequelize
 ): Promise<void> {
   try {
-    Style.init(
+    Genre.init(
       {
         id: {
-          type: DataTypes.INTEGER,
+          type: new DataTypes.INTEGER(),
           autoIncrement: true,
           primaryKey: true,
         },
@@ -39,13 +39,13 @@ export const initStyleModel = async function (
         },
       },
       {
-        tableName: "styles",
+        tableName: "genres",
         timestamps: false,
         underscored: true,
         sequelize,
       }
     );
-    await Style.sync({ alter: true });
+    await Genre.sync();
   } catch (error) {
     console.error(error);
   }

@@ -92,9 +92,16 @@ export const initReleaseModel = async function (
         timestamps: false,
         underscored: true,
         sequelize,
+        indexes: [
+          {
+            name: "release_title_trgm",
+            using: "gin",
+            fields: [Sequelize.literal("title gin_trgm_ops")],
+          },
+        ],
       }
     );
-    await Release.sync({ alter: true });
+    await Release.sync();
   } catch (error) {
     console.error(error);
   }

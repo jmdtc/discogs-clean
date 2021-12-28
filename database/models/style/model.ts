@@ -1,16 +1,16 @@
 import { Sequelize, DataTypes, Model, Association, Optional } from "sequelize";
 import Release from "../release";
 
-interface FormatAttributes {
+interface StyleAttributes {
   id: number;
   name: string;
 }
 
-interface FormatCreationAttributes extends Optional<FormatAttributes, "id"> {}
+interface StyleCreationAttributes extends Optional<StyleAttributes, "id"> {}
 
-export default class Format extends Model<
-  FormatAttributes,
-  FormatCreationAttributes
+export default class Style extends Model<
+  StyleAttributes,
+  StyleCreationAttributes
 > {
   public id!: number;
   public name!: string;
@@ -18,34 +18,34 @@ export default class Format extends Model<
   public readonly releases?: Release[];
 
   public static associations: {
-    releases: Association<Format, Release>;
+    releases: Association<Style, Release>;
   };
 }
 
-export const initFormatModel = async function (
+export const initStyleModel = async function (
   sequelize: Sequelize
 ): Promise<void> {
   try {
-    Format.init(
+    Style.init(
       {
         id: {
-          type: new DataTypes.INTEGER(),
-          primaryKey: true,
+          type: DataTypes.INTEGER,
           autoIncrement: true,
+          primaryKey: true,
         },
         name: {
-          type: new DataTypes.STRING(256),
+          type: new DataTypes.STRING(128),
           allowNull: false,
         },
       },
       {
-        tableName: "formats",
+        tableName: "styles",
         timestamps: false,
         underscored: true,
         sequelize,
       }
     );
-    await Format.sync({ alter: true });
+    await Style.sync();
   } catch (error) {
     console.error(error);
   }
