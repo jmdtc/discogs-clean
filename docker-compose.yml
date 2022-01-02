@@ -11,5 +11,6 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     command: -p 5432
+    mem_limit: 3G
 volumes:
   database-data: #

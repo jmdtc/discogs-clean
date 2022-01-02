@@ -4,53 +4,44 @@ import Release from "../../database/models/release/model";
 import { Op, Sequelize } from "sequelize";
 import sequelize from "sequelize";
 
-// this is the very beginning of the discogs tracks implementation
-// const test = await Release.findAll({
-//   include: [
-//     {
-//       model: Artist,
-//       as: "artists",
-//       where: {
-//         name: {
-//           $iLike:`%${artistName}%`,
-//         },
-//       },
-//     },
-//     {
-//       model: Track,
-//       as: "tracks",
-//       where: {
-//         title: {
-//           $iLike: `%${trackName}%`,
-//         },
-//       },
-//       include: [
-//         {
-//           model: Artist,
-//           as: "artists",
-//         },
-//       ],
-//     },
-//   ],
-// });
+const rawBaseSql = `
+  SELECT 
+  releases.id as release_id
+  , master_id
+  , tracks.title as track
+  , releases.title as release_title
+  , artists.name as artist
+  , country
+  , release_date
+  FROM releases
+  LEFT JOIN 
+  artist_releases                                                                                     
+  ON releases.id = artist_releases.release_id
+  LEFT JOIN 
+  tracks
+  ON tracks.release_id = releases.id
+  LEFT JOIN
+  track_artists
+  ON track_artists.track_id = tracks.id
+  INNER JOIN 
+  artists
+  ON artist_releases.artist_id = artists.id OR track_artists.artist_id = artists.id
+`;
 
 export type SearchForSimilarTracksArgs = {
-  trackName: string;
-  lScore: number;
-  artistName?: string;
-  artistId?: number;
+  artist: {
+    operator: "like" | "equal";
+    value: string;
+  };
+  track: {
+    operator: "like" | "equal";
+    value: string;
+  };
+  vinylOnly: boolean;
+  includeUnknownArtist: boolean;
 };
 
 export default async function searchForSimilarTracks(
   sequelize: Sequelize,
-  { lScore = 2, trackName, artistName, artistId }: SearchForSimilarTracksArgs
-) {
-  if (!artistName && !artistId)
-    throw "You need to specify an artist name or id";
-
-  if (artistName) {
-    // const test = await sequelize.query();
-    return {};
-  } else {
-  }
-}
+  { artist, track, includeUnknownArtist }: SearchForSimilarTracksArgs
+) {}
