@@ -1,12 +1,12 @@
 # Discogs
 
-## Instruction to set up project
+## Instructions to set up the project
 
 ### Dependencies needed
 
-1. NodeJS (LTS) must be installed https://nodejs.org/en/
+1. [NodeJS (LTS)](https://nodejs.org/en/) must be installed
 2. I recommend to install yarn, but this is optional (lots of different ways to install it)
-3. Docker desktop https://www.docker.com/products/docker-desktop
+3. [Docker desktop](https://www.docker.com/products/docker-desktop)
 
 ### Before everything else, each time
 
@@ -32,3 +32,5 @@
 - for now a database with models
 
 ## Useful commands
+
+- [Sequelize CLI and migration commands documentation](https://github.com/sequelize/cli)
